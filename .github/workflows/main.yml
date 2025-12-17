@@ -1,0 +1,32 @@
+name: Deploy Website to Hosting
+
+on:
+  push:
+    branches:
+      - main  # Chạy action này khi có code push lên nhánh main
+
+jobs:
+  web-deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get latest code
+      uses: actions/checkout@v4
+    
+    # (Tuỳ chọn) Nếu cần build CSS/JS hoặc cài thư viện thì thêm bước ở đây
+    # Ví dụ: npm install, composer install...
+
+    - name: Sync files to Hosting
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        server-dir: ./public_html/ # Thư mục đích trên hosting (QUAN TRỌNG: nhớ dấu / ở cuối)
+        exclude: | # Các file không muốn đẩy lên hosting
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          README.md
+          .gitignore
+          .env
