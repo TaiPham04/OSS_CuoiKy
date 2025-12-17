@@ -1,2 +1,3 @@
 <H1>Xin chào OSS</H1>
-<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam, alias, magni atque at deleniti non delectus officia sequi deserunt repudiandae voluptates commodi, ipsa minus assumenda ratione laborum saepe. Repudiandae, vel!</p>
+<p>lorem</p>
+<h2>helloS</h2>
