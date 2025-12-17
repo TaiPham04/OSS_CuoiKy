@@ -1,32 +1,29 @@
-name: Deploy Website to Hosting
+name: Deploy to InfinityFree
 
 on:
   push:
     branches:
-      - main  # Chạy action này khi có code push lên nhánh main
+      - main
 
 jobs:
-  web-deploy:
-    name: Deploy
+  ftp-deploy:
+    name: Upload via FTP
     runs-on: ubuntu-latest
-    steps:
-    - name: Get latest code
-      uses: actions/checkout@v4
-    
-    # (Tuỳ chọn) Nếu cần build CSS/JS hoặc cài thư viện thì thêm bước ở đây
-    # Ví dụ: npm install, composer install...
 
-    - name: Sync files to Hosting
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-      with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        server-dir: ./public_html/ # Thư mục đích trên hosting (QUAN TRỌNG: nhớ dấu / ở cuối)
-        exclude: | # Các file không muốn đẩy lên hosting
-          **/.git*
-          **/.git*/**
-          **/node_modules/**
-          README.md
-          .gitignore
-          .env
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: FTP Deploy to InfinityFree
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftp
+          port: 21
+          server-dir: /htdocs/
+          local-dir: ./
+          exclude: |
+            **/config.php
+          state-name: .ftp-deploy-sync-state.json
